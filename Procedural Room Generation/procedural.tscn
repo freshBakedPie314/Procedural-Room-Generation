@@ -1,0 +1,38 @@
+[gd_scene load_steps=4 format=3 uid="uid://c7pyf6sp8qgpu"]
+
+[ext_resource type="Script" path="res://RoomGeneration.gd" id="1_k1dlw"]
+[ext_resource type="TileSet" uid="uid://bubs0dona1ndh" path="res://tilset.tres" id="2_dmcyq"]
+[ext_resource type="PackedScene" uid="uid://di2gi6rogs61u" path="res://Player.tscn" id="3_g5qiq"]
+
+[node name="Procedural" type="Node2D"]
+script = ExtResource("1_k1dlw")
+
+[node name="MainTileMap" type="TileMap" parent="."]
+position = Vector2(281, 268)
+tile_set = ExtResource("2_dmcyq")
+cell_quadrant_size = 32
+format = 2
+layer_0/tile_data = PackedInt32Array(1114113, 1, 0, 1114121, 1, 0, 65550, 1, 0, 524303, 1, 0, 65568, 1, 0, 0, 1, 0, 65536, 1, 0, 131072, 1, 0, 196608, 1, 0, 262144, 1, 0, 327680, 589824, 7, 393216, 1, 0, 458752, 1, 0, 524288, 1, 0, 589824, 1, 0, 655360, 1, 0, 720896, 1, 0, 786432, 1, 0, 851968, 1, 0, 917504, 1, 0, 983040, 1, 0, 1048576, 1, 0, 1114112, 1, 0, 1, 1, 0, 2, 1, 0, 1114114, 1, 0, 3, 1, 0, 1114115, 1, 0, 4, 1, 0, 1114116, 1, 0, 5, 1, 0, 1114117, 1, 0, 6, 1, 0, 1114118, 1, 0, 7, 1, 0, 1114119, 1, 0, 8, 1, 0, 655368, 1, 0, 720904, 1, 0, 786440, 1, 0, 851976, 1, 0, 917512, 1, 0, 983048, 1, 0, 1048584, 1, 0, 1114120, 1, 0, 9, 1, 0, 10, 1, 0, 1114122, 1, 0, 11, 1, 0, 1114123, 1, 0, 12, 1, 0, 1114124, 1, 0, 13, 1, 0, 1114125, 1, 0, 14, 1, 0, 131086, 1, 0, 196622, 1, 0, 262158, 1, 0, 327694, 1, 0, 393230, 1, 0, 458766, 1, 0, 524302, 1, 0, 1114126, 1, 0, 15, 1, 0, 1114127, 1, 0, 16, 1, 0, 524304, 1, 0, 1114128, 1, 0, 17, 1, 0, 524305, 1, 0, 1114129, 589824, 7, 18, 1, 0, 524306, 1, 0, 1114130, 1, 0, 19, 1, 0, 524307, 1, 0, 1114131, 1, 0, 20, 1, 0, 524308, 1, 0, 1114132, 1, 0, 21, 1, 0, 524309, 1, 0, 1114133, 1, 0, 22, 1, 0, 524310, 1, 0, 1114134, 1, 0, 23, 1, 0, 524311, 1, 0, 1114135, 1, 0, 24, 589824, 7, 524312, 1, 0, 1114136, 1, 0, 25, 1, 0, 1114137, 1, 0, 26, 1, 0, 1114138, 1, 0, 27, 1, 0, 1114139, 1, 0, 28, 1, 0, 1114140, 1, 0, 29, 1, 0, 1114141, 1, 0, 30, 1, 0, 1114142, 1, 0, 31, 1, 0, 1114143, 1, 0, 32, 1, 0, 131104, 1, 0, 196640, 1, 0, 262176, 1, 0, 327712, 1, 0, 393248, 1, 0, 458784, 1, 0, 524320, 1, 0, 589856, 1, 0, 655392, 1, 0, 720928, 1, 0, 786464, 1, 0, 852000, 589824, 7, 917536, 1, 0, 983072, 1, 0, 1048608, 1, 0, 1114144, 1, 0)
+
+[node name="Door1" type="Marker2D" parent="MainTileMap"]
+position = Vector2(559.6, 561.6)
+gizmo_extents = 62.6
+
+[node name="Door3" type="Marker2D" parent="MainTileMap"]
+position = Vector2(15.6, 175.6)
+gizmo_extents = 62.6
+
+[node name="Door0" type="Marker2D" parent="MainTileMap"]
+position = Vector2(783.6, 17.6)
+gizmo_extents = 62.6
+
+[node name="Door2" type="Marker2D" parent="MainTileMap"]
+position = Vector2(1039.6, 432.6)
+gizmo_extents = 62.6
+
+[node name="Camera2D" type="Camera2D" parent="."]
+zoom = Vector2(0.1, 0.1)
+
+[node name="CharacterBody2D" parent="." instance=ExtResource("3_g5qiq")]
+position = Vector2(467, 441)
+speed = 5000
