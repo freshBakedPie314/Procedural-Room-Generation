@@ -8,10 +8,10 @@ extends Node2D
 @export var numberOfRooms = 15
 @export var numberOfSubRooms = 10
 @onready var startingDoorPos = [
-	$MainTileMap/Door0.global_position ,
-	$MainTileMap/Door1.global_position, 
-	$MainTileMap/Door2.global_position , 
-	$MainTileMap/Door3.global_position
+	$MainTileMap/Door0 ,
+	$MainTileMap/Door1, 
+	$MainTileMap/Door2 , 
+	$MainTileMap/Door3
 ]
 
 @onready var roomsDuplicate = rooms
@@ -25,6 +25,7 @@ var spawnedRooms = []
 var first = true
 var mainRoomDoorIndex
 var attempts = 0
+var precviousDoorIndex
 var startingDoorDuplicate = startingDoorPos
 func _ready():
 	createMainBranch()
@@ -37,7 +38,7 @@ func _ready():
 func createMainBranch():
 	roomsDuplicate = rooms
 	mainRoomDoorIndex = randi_range(0 , startingDoorPos.size() -1 )
-	currentDoorPos = startingDoorPos[mainRoomDoorIndex]
+	currentDoorPos = startingDoorPos[mainRoomDoorIndex].global_position
 	spawnedRooms.append(currentRoom)
 	for i in numberOfRooms:
 		createRooms()
@@ -49,7 +50,7 @@ func createSubBranches():
 	first = true
 	currentRoom = mainRoom
 	mainRoomDoorIndex = randi_range(0 , startingDoorPos.size() -1 )
-	currentDoorPos = startingDoorPos[mainRoomDoorIndex]
+	currentDoorPos = startingDoorPos[mainRoomDoorIndex].global_position
 	for i in numberOfSubRooms:
 		createRooms()
 
@@ -63,7 +64,7 @@ func createRooms():
 
 
 func _position_room(room):
-	var diffX = room.doors[roomDoorIndex].global_position.x - currentDoorPos.x
+	var diffX = room.doors[roomDoorIndex].global_position.x - currentDoorPos.x 
 	var diffY = room.doors[roomDoorIndex].global_position.y - currentDoorPos.y
 	room.global_position = Vector2(room.global_position.x - diffX , room.global_position.y - diffY)
 	if(isRoomOverlapping(room)):
@@ -75,14 +76,21 @@ func _position_room(room):
 			attempts+=1
 			room.get_parent().remove_child(room)
 			if !first:
-				currentDoorPos = currentRoom.doors[randi_range(0, currentRoom.doors.size()-1)].global_position
+				precviousDoorIndex = randi_range(0, currentRoom.doors.size()-1)
+				currentDoorPos = currentRoom.doors[precviousDoorIndex].global_position
 			createRooms()
 	else:
 		attempts=0
+		room._remove_door(room.doors[roomDoorIndex].position)
+		if !first:
+			currentRoom._remove_door(currentRoom.doors[precviousDoorIndex].position)
+		else:
+			_remove_door(startingDoorPos[mainRoomDoorIndex].position)
 		spawnedRooms.append(room)
+		
 		currentRoom = room
-		roomDoorIndex = randi_range(0 , room.doors.size() -1 )
-		currentDoorPos = currentRoom.doors[roomDoorIndex].global_position
+		precviousDoorIndex = randi_range(0 , room.doors.size() -1 )
+		currentDoorPos = currentRoom.doors[precviousDoorIndex].global_position
 		if first:
 			startingDoorPos.pop_at(mainRoomDoorIndex)
 			print(startingDoorPos)
@@ -106,11 +114,22 @@ func checkOverlappingBetween(newRoom , oldRoom):
 	return (oldRoomRec.intersects(newRoomRec))
 
 
+func _remove_door(doorPos):
+	print("called")
+	var mapPos = mainRoom.local_to_map(doorPos)
+	mainRoom.set_cell(0 , mapPos , -1)
+
 func _draw():
-	draw_rect(oldRoomRec , Color8(255,0,0,125))
-	draw_rect(newRoomRec ,  Color8(0,255,0,125))
-	var lastRoom = spawnedRooms[1-1]
+	#draw_rect(oldRoomRec , Color8(255,0,0,125))
+	#draw_rect(newRoomRec ,  Color8(0,255,0,125))
+	
+	var firstRoom = spawnedRooms[0]
+	var firstRoomRecSize = to_global(firstRoom.map_to_local(firstRoom.get_used_rect().size))
+	var firstRoomRec = Rect2i(firstRoom.global_position , firstRoomRecSize).grow(-32)
+	draw_rect(firstRoomRec ,  Color8(255,0,0,125))
+	
+	var lastRoom = spawnedRooms[numberOfRooms]
 	var lastRoomRecSize = to_global(lastRoom.map_to_local(lastRoom.get_used_rect().size))
 	var lastRoomRec = Rect2i(lastRoom.global_position , lastRoomRecSize).grow(-32)
-	draw_rect(newRoomRec ,  Color8(0,0,255,125))
+	draw_rect(lastRoomRec ,  Color8(0,0,255,125))
 

@@ -8,6 +8,7 @@ extends TileMap
 @onready var area = $Area2D
 var overlapping = false
 
-func _physics_process(delta):
-	for i in doors.size() - 1:
-		self.erase_cell(0,to_local(doors[i].global_position))
+func _remove_door(doorPos):
+	print("called")
+	var mapPos = self.local_to_map(doorPos)
+	self.set_cell(0 , mapPos , -1)
