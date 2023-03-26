@@ -1,8 +1,8 @@
 extends Node2D
 
 @onready var rooms = [
-	preload("res://room_1.tscn"),
-	preload("res://room_2.tscn")
+	preload("res://Scenes/Room/room_1.tscn"),
+	preload("res://Scenes/Room/room_2.tscn")
 ]
 
 @export var numberOfRooms = 15

@@ -1,7 +1,7 @@
-[gd_scene load_steps=3 format=3 uid="uid://igdg48ownj3c"]
+[gd_scene load_steps=3 format=3 uid="uid://bab7kaqkddcem"]
 
-[ext_resource type="TileSet" uid="uid://c0r50ukx33w1k" path="res://tilset.tres" id="1_g30aq"]
-[ext_resource type="Script" path="res://Room.gd" id="2_246ai"]
+[ext_resource type="TileSet" uid="uid://bubs0dona1ndh" path="res://Assets/tilset.tres" id="1_g30aq"]
+[ext_resource type="Script" path="res://Scripts/Room.gd" id="2_246ai"]
 
 [node name="Room1" type="TileMap"]
 tile_set = ExtResource("1_g30aq")
