@@ -28,12 +28,13 @@ var attempts = 0
 var precviousDoorIndex
 var startingDoorDuplicate = startingDoorPos
 func _ready():
+	var time_before = Time.get_ticks_msec()
 	createMainBranch()
 	createSubBranches()
 	createSubBranches()
 	createSubBranches()
-	print(spawnedRooms)
-
+	var execution_time = Time.get_ticks_msec()-time_before
+	print("Execution Time = " , execution_time/1000 , "sec")
 
 func createMainBranch():
 	roomsDuplicate = rooms
@@ -86,6 +87,7 @@ func _position_room(room):
 			currentRoom._remove_door(currentRoom.doors[precviousDoorIndex].position)
 		else:
 			_remove_door(startingDoorPos[mainRoomDoorIndex].position)
+		#checkForOverllappingDoors(room)
 		spawnedRooms.append(room)
 		
 		currentRoom = room
@@ -93,8 +95,19 @@ func _position_room(room):
 		currentDoorPos = currentRoom.doors[precviousDoorIndex].global_position
 		if first:
 			startingDoorPos.pop_at(mainRoomDoorIndex)
-			print(startingDoorPos)
 		first = false
+
+
+
+func checkForOverllappingDoors(room):
+	if !first:
+		for i in room.doors.size()-1:
+			var pos = room.doors[i].global_position
+			for j in spawnedRooms.size()-1:
+				for k in spawnedRooms[j].doors.size()-1:
+					var pos2 = spawnedRooms[j].doors[k].global_position
+					if pos == pos2:
+						print("door")
 
 
 
@@ -115,7 +128,6 @@ func checkOverlappingBetween(newRoom , oldRoom):
 
 
 func _remove_door(doorPos):
-	print("called")
 	var mapPos = mainRoom.local_to_map(doorPos)
 	mainRoom.set_cell(0 , mapPos , -1)
 
@@ -133,3 +145,17 @@ func _draw():
 	var lastRoomRec = Rect2i(lastRoom.global_position , lastRoomRecSize).grow(-32)
 	draw_rect(lastRoomRec ,  Color8(0,0,255,125))
 
+#func check():
+#	for room in spawnedRooms.size()-1:
+#		for i in spawnedRooms[room+1].doors.size():
+#			var space_state = get_world_2d().direct_space_state
+#		# use global coordinates, not local to node
+#			var query = PhysicsRayQueryParameters2D.create(spawnedRooms[room+1].doors[i].global_position + Vector2(0,-100), 
+#			spawnedRooms[room+1].doors[i].global_position + Vector2(0, 200))
+#			var result = space_state.intersect_ray(query)
+#			if result:
+#				print("hit")
+#				var mapPos = spawnedRooms[room+1].local_to_map(spawnedRooms[room+1].doors[i].position)
+#				spawnedRooms[room+1].set_cell(0 , mapPos , -1)
+#				instance_from_id(result.collider_id).set_cell(0,
+#				instance_from_id(result.collider_id).local_to_map(spawnedRooms[room+1].doors[i].position) , -1)

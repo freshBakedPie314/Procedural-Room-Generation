@@ -25,6 +25,3 @@ gizmo_extents = 185.4
 [node name="Marker3" type="Marker2D" parent="."]
 position = Vector2(16, 307)
 gizmo_extents = 185.4
-
-[node name="Area2D" type="Area2D" parent="."]
-disable_mode = 2
