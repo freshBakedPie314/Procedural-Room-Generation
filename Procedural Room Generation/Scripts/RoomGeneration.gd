@@ -29,14 +29,15 @@ var precviousDoorIndex
 var startingDoorDuplicate = startingDoorPos
 func _ready():
 	var time_before = Time.get_ticks_msec()
-	createMainBranch()
-	createSubBranches()
-	createSubBranches()
-	createSubBranches()
+	createMainRoot()
+	createSubRoot()
+	createSubRoot()
+	createSubRoot()
+	createBranches()
 	var execution_time = Time.get_ticks_msec()-time_before
 	print("Execution Time = " , execution_time/1000 , "sec")
 
-func createMainBranch():
+func createMainRoot():
 	roomsDuplicate = rooms
 	mainRoomDoorIndex = randi_range(0 , startingDoorPos.size() -1 )
 	currentDoorPos = startingDoorPos[mainRoomDoorIndex].global_position
@@ -44,8 +45,7 @@ func createMainBranch():
 	for i in numberOfRooms:
 		createRooms()
 
-
-func createSubBranches():
+func createSubRoot():
 	roomsDuplicate = rooms
 	attempts=0
 	first = true
@@ -54,6 +54,9 @@ func createSubBranches():
 	currentDoorPos = startingDoorPos[mainRoomDoorIndex].global_position
 	for i in numberOfSubRooms:
 		createRooms()
+
+func createBranches():
+	pass
 
 
 func createRooms():
@@ -87,7 +90,6 @@ func _position_room(room):
 			currentRoom._remove_door(currentRoom.doors[precviousDoorIndex].position)
 		else:
 			_remove_door(startingDoorPos[mainRoomDoorIndex].position)
-		#checkForOverllappingDoors(room)
 		spawnedRooms.append(room)
 		
 		currentRoom = room
@@ -145,17 +147,3 @@ func _draw():
 	var lastRoomRec = Rect2i(lastRoom.global_position , lastRoomRecSize).grow(-32)
 	draw_rect(lastRoomRec ,  Color8(0,0,255,125))
 
-#func check():
-#	for room in spawnedRooms.size()-1:
-#		for i in spawnedRooms[room+1].doors.size():
-#			var space_state = get_world_2d().direct_space_state
-#		# use global coordinates, not local to node
-#			var query = PhysicsRayQueryParameters2D.create(spawnedRooms[room+1].doors[i].global_position + Vector2(0,-100), 
-#			spawnedRooms[room+1].doors[i].global_position + Vector2(0, 200))
-#			var result = space_state.intersect_ray(query)
-#			if result:
-#				print("hit")
-#				var mapPos = spawnedRooms[room+1].local_to_map(spawnedRooms[room+1].doors[i].position)
-#				spawnedRooms[room+1].set_cell(0 , mapPos , -1)
-#				instance_from_id(result.collider_id).set_cell(0,
-#				instance_from_id(result.collider_id).local_to_map(spawnedRooms[room+1].doors[i].position) , -1)
